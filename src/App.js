@@ -59,7 +59,7 @@ function App() {
   //});
 
   // Flask Endpoint 
-  const FLASK_BASE_URL = "http://LOCALHOST:5000";
+  const FLASK_BASE_URL = "https://aphasia-assistant-backend.onrender.com";
 
   // Recording state management
   const [recordingTimeout, setRecordingTimeout] = useState(null);
