@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { OpenAI } from "openai";
+import OpenAI from "openai";
 import { useSpeechSynthesis } from "react-speech-kit";
 
 function App() {
@@ -53,10 +53,13 @@ function App() {
 
   // Initialize OpenAI client
   // Ypur API Key should look be something like "sk-proj-xxxxxxxxxxxxxxx"
-  const openai = new OpenAI({
-    apiKey: "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",
-    dangerouslyAllowBrowser: true,
-  });
+  //const openai = new OpenAI({
+  //  apiKey: "",
+  //  dangerouslyAllowBrowser: true,
+  //});
+
+  // Flask Endpoint 
+  const FLASK_BASE_URL = "http://LOCALHOST:5000";
 
   // Recording state management
   const [recordingTimeout, setRecordingTimeout] = useState(null);
@@ -209,35 +212,39 @@ function App() {
     }
   };
 
-  // Transcribe MP3 file with Whisper API
+  // Transcribe MP3 file with Whisper API (via Flask Proxy)
   const transcribeAudio = async (audioBlob) => {
     try {
-      setStatus("Transcribing with Whisper API...");
-      
-      // Create a File object from the Blob
+      setStatus("Transcribing via Flask Proxy...");
+
+      // 1. Create a File object from the Blob
       const file = new File([audioBlob], "audio.mp3", { type: "audio/mp3" });
-      
-      // Create a FormData object and append the file
+
+      // 2. Create FormData object for file upload
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("model", "whisper-1");
-      formData.append("language", "en");
-      
-      // Call the OpenAI transcription API
-      const response = await openai.audio.transcriptions.create({
-        file: file,
-        model: "whisper-1",
-        language: "en",
+
+      // 3. Send the file to your Flask transcription endpoint
+      const response = await fetch(`${FLASK_BASE_URL}/api/transcribe`, {
+        method: "POST",
+        body: formData, // Flask handles the file/model fields from here
       });
-      
-      const transcribedText = response.text;
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Flask Error: ${response.status} - ${errorData.error}`);
+      }
+
+      const data = await response.json();
+      const transcribedText = data.text; // Flask should return { text: "..." }
+
       setTranscription(transcribedText);
       setStatus("Generating suggestions...");
-      
+
       await generateSuggestions(transcribedText);
     } catch (error) {
       console.error("Transcription Error:", error);
-      setStatus("Error in transcription");
+      setStatus(`Error in transcription: ${error.message}`);
     }
   };
 
@@ -285,41 +292,26 @@ function App() {
           Input: "I happy today!"
           Output: "I am happy today!"
           `
-      const response = await openai.chat.completions.create({
-        model: "gpt-4o", // You can use gpt-4o for better quality if available
-        messages: [
-          { 
-            role: "system", 
-//             content: `You are an aphasia speech assistant. Generate 3 possible corrections:
-// 1. Retain the user's intended meaning.
-// 2. Use first-person perspective ("I") unless user input (text) clearly indicates someone else, using a name etc..
-// 3. Provide one complete sentence per suggestion.
-// 4. Do not number suggestions, just separate them with newlines.
-// 5. Keep sentences simple, clear, and conversational.`
-            // content: `You are an aphasia language correction expert. Follow these guidelines:
-            //   1. Analyze the input sentence.
-            //   2. Return **only the corrected version**.
-            //   3. Maintain the original meaning.
-            //   4. Use simple, natural, first-person perspective ("I") **unless** the user explicitly references another person.
-            //   5. Use neutral, conversational tone.
-
-            //   Reference context:`+general_context
-            content: `You are an aphasia speech assistant. Generate 3 possible corrections:
-              1. Retain the user's intended meaning.
-              2. Use **first-person perspective ("I")** unless user input clearly indicates someone else.
-              3. Provide **one complete sentence per suggestion**.
-              4. Do not number suggestions—just separate them with newlines.
-              5. Keep sentences simple, clear, and conversational.
-
-              Reference context:`+general_context
+        
+      // 1. Send the prompt and context to the Flask suggestion endpoint
+      const response = await fetch(`${FLASK_BASE_URL}/api/suggest`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
           },
-          { role: "user", content: text }
-        ],
-        temperature: 0.2,
-        max_tokens: 100,
+          body: JSON.stringify({
+              user_text: text, // The transcribed text
+              context: general_context, // The system instructions
+          }),
       });
+
+      if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(`Flask Error: ${response.status} - ${errorData.error}`);
+      }
       
-      const content = response.choices[0].message.content;
+      const data = await response.json();
+      const content = data.content; // Flask should return { content: "..." }
       
       // Parse the suggestions from the response
       const suggestionsList = content
@@ -348,7 +340,7 @@ function App() {
           className={`recording-btn ${recording ? 'recording' : ''}`}
         >
           {/* {recording ? "Stop Recording" : "Start Recording "} */}
-          <img src="microphone.png" alt="." class="ear-icon" />
+          <img src={process.env.PUBLIC_URL + "/microphone.png"} alt="microphone icon" class="ear-icon" />
         </button>
       </div>
       
@@ -380,13 +372,13 @@ function App() {
                 </div>
                 <div className="button-group">
                   <button className="hear-btn" onClick={() => setText(suggestions[0])}>
-                    <img src="ear2.svg" alt="." class="ear-icon" />
+                    <img src={process.env.PUBLIC_URL + "/ear2.svg"} alt="ear icon" class="ear-icon" />
                   </button>
                   <button className="yes-btn" onClick={handleYesOrReset}>
-                    <img src="happy2.svg" alt="." class="happy-icon" />
+                    <img src={process.env.PUBLIC_URL + "/happy2.svg"} alt="happy icon" class="happy-icon" />
                   </button>{" "}
                   <button className="no-btn" onClick={handleNo}>
-                    <img src="sad2.svg" alt="." class="sad-icon" /> 
+                    <img src={process.env.PUBLIC_URL + "/sad2.svg"} alt="sad icon" class="sad-icon" /> 
                   </button>{" "}
                   {/* <button onClick={handleYesOrReset}>Reset</button> */}
                 </div>
@@ -401,13 +393,13 @@ function App() {
                 </div>
                 <div className="button-group">
                   <button className="hear-btn" onClick={() => setText(suggestions[1])}>
-                    <img src="ear2.svg" alt="." class="ear-icon" />
+                    <img src={process.env.PUBLIC_URL + "/ear2.svg"} alt="ear icon" class="ear-icon" />
                   </button>
                   <button className="yes-btn" onClick={handleYesOrReset}>
-                    <img src="happy2.svg" alt="." class="happy-icon" />
+                    <img src={process.env.PUBLIC_URL + "/happy2.svg"} alt="happy icon" class="happy-icon" />
                   </button>{" "}
                   <button className="no-btn" onClick={handleNo}>
-                    <img src="sad2.svg" alt="." class="sad-icon" /> 
+                    <img src={process.env.PUBLIC_URL + "/sad2.svg"} alt="sad icon" class="sad-icon" /> 
                   </button>{" "}
                   {/* <button onClick={handleYesOrReset}>Reset</button> */}
                 </div>
@@ -421,13 +413,13 @@ function App() {
                 </div>
                 <div className="button-group">
                   <button className="hear-btn" onClick={() => setText(suggestions[2])}>
-                    <img src="ear2.svg" alt="." class="ear-icon" />
+                    <img src={process.env.PUBLIC_URL + "/ear2.svg"} alt="ear icon" class="ear-icon" />
                   </button>
                   <button className="yes-btn" onClick={handleYesOrReset}>
-                    <img src="happy2.svg" alt="." class="happy-icon" />
+                    <img src={process.env.PUBLIC_URL + "/happy2.svg"} alt="happy icon" class="happy-icon" />
                   </button>{" "}
                   <button className="no-btn" onClick={handleNo}>
-                    <img src="sad2.svg" alt="." class="sad-icon" /> 
+                    <img src={process.env.PUBLIC_URL + "/sad2.svg"} alt="sad icon" class="sad-icon" /> 
                   </button>{" "}
                   {/* <button onClick={handleYesOrReset}>Reset</button> */}
                 </div>
