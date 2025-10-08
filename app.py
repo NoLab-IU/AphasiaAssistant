@@ -135,10 +135,3 @@ def generate_suggestions_flask():
     except Exception as e:
         print(f"OpenAI Chat Error: {e}")
         return jsonify({"error": "Failed to generate suggestions via server."}), 500
-
-
-# --- 4. RUN SERVER ---
-
-if __name__ == '__main__':
-    # Flask will run on port 5000, while React runs on 3000
-    app.run(port=5000, debug=True)
