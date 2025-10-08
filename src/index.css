@@ -1,0 +1,293 @@
+/* Main Styles for Aphasia Support Assistant */
+
+:root {
+  --primary-color: #1a365d;
+  --primary-hover: #2c5282;
+  --secondary-color: #f8fafc;
+  --accent-color: #4299e1;
+  --success-color: #e6f6e6;
+  --success-border: #4ade80;
+  --alert-color: #fff8e6;
+  --alert-border: #f59e0b;
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --border-color: #e2e8f0;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: #f7f9fc;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 900px !important;
+  margin: 2rem auto;
+  /* padding: 2rem; */
+  padding: 0.5rem 2rem 0.5rem 2rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+h1 {
+  color: var(--primary-color);
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-align: center;
+  /* margin-bottom: 1rem; */
+  margin: 0.1rem 1rem 0rem 0;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+
+button {
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  border: none;
+  margin: 1rem 0;
+  outline: none;
+  font-size: 1.3rem;
+}
+
+.transcription-text {
+  font-size: 1rem;
+  text-align: center;
+  margin: 0.25rem 0.75rem 0.25rem 0.75rem;
+} 
+
+.suggestion-text {
+  font-size: 3rem;
+  text-align: center;
+  margin: 0.25rem 0.75rem 1.2rem 0.75rem;
+}
+
+.hear-btn-old {
+  font-weight: 600;
+  /* padding: 0.75rem 2rem; */
+  padding: 0.75rem 0.5rem 0.75rem 1.5rem;
+  font-size: 1.3rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  border: none;
+  margin: 0.1rem 1rem 1rem 0;
+  outline: none;
+
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hear-btn {
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  border: none;
+  margin: 0.1rem 3rem 1.5rem 0;
+  outline: none;
+  font-size: 1.3rem;
+  /* color: green; */
+  background-color:#cfcfcf
+}
+
+.yes-btn {
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  border: none;
+  margin: 0.1rem 3rem 1.5rem 0;
+  outline: none;
+  font-size: 1.3rem;
+  color: green;
+  background-color:#cfcfcf
+}
+
+.no-btn {
+  font-weight: 600;
+  padding: 0.75rem 1.7rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  border: none;
+  
+  margin: 0.1rem 1rem 1.5rem 0;
+  outline: none;
+  font-size: 1.3rem;
+  color: red;
+  background-color:#cfcfcf
+}
+
+.ear-icon {
+  width: 42px;  /* Adjust size as needed */
+  height: 42px;
+}
+
+.happy-icon {
+  width: 42px;  /* Adjust size as needed */
+  height: 42px;
+}
+
+.sad-icon {
+  width: 42px;  /* Adjust size as needed */
+  height: 42px;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap; /* Optional, lets them wrap if needed */
+  align-items: center;
+  justify-content: center; /* or space-between / space-around / flex-start */
+  gap: 1rem; /* adds spacing between buttons */
+}
+
+button:focus {
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+}
+
+button:disabled {
+  background-color: #cbd5e0;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.recording-btn {
+  background-color: var(--primary-color);
+  color: white;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  font-size: 1.5rem; /* Makes the text bigger */
+  padding: 1rem 1.5rem; /* Makes the button itself bigger */
+  border: none; /* Optional: cleaner look */
+  border-radius: 0.5rem; /* Optional: rounded corners */
+  cursor: pointer; /* Optional: pointer cursor */
+
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.recording-btn:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+}
+
+.recording-btn.recording {
+  background-color: #e53e3e;
+}
+
+.recording-btn.recording:hover {
+  background-color: #c53030;
+}
+
+.status {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  text-align: center;
+  font-style: italic;
+  /* margin: 1rem 0; */
+  margin: 0.1rem 1rem 1rem 0;
+}
+
+.audio-player {
+  width: 100%;
+  background-color: var(--secondary-color);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+audio {
+  width: 100%;
+}
+
+.panel {
+  border-radius: 8px;
+  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid transparent;
+}
+
+.panel-heading {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0.1rem 1rem 1.5rem 0;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.panel-heading-transcribed {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.1rem 1rem 1.5rem 0;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+
+.suggestions-panel {
+  background-color: var(--success-color);
+  border-left-color: var(--success-border);
+}
+
+.transcript-panel {
+  background-color: var(--alert-color);
+  border-left-color: var(--alert-border);
+}
+
+ol.suggestions-list {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+ol.suggestions-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+ol.suggestions-list li:last-child {
+  border-bottom: none;
+}
+
+.footer {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  .panel {
+    padding: 1rem;
+  }
+}
