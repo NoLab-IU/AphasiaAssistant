@@ -5,25 +5,20 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from openai import OpenAI
 from dotenv import load_dotenv
-from werkzeug.utils import secure_filename # <-- Added for robust file handling
+from werkzeug.utils import secure_filename
 
 # --- 1. CONFIGURATION ---
 
-# Load environment variables from .flaskenv (where the API key is stored)
 load_dotenv(".flaskenv")
 
 app = Flask(__name__)
 
-# IMPORTANT: Configure CORS to allow your React frontend (on a different domain/port) 
-# to talk to this server. The * allows all origins, but for production, 
-# you should restrict this to your specific GitHub Pages domain.
 CORS(app) 
 
-# Initialize the OpenAI client with the securely loaded key
+
 OPENAI_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_KEY:
     print("FATAL ERROR: OPENAI_API_KEY not found in .flaskenv!")
-    # Exit or raise error if the key is missing
     client = None 
 else:
     client = OpenAI(api_key=OPENAI_KEY)
@@ -37,15 +32,13 @@ def transcribe_audio():
     if client is None:
         return jsonify({"error": "Server not configured: API Key missing."}), 500
         
-    # Check if an audio file was uploaded in the request
     if 'file' not in request.files:
         return jsonify({"error": "No file part in the request"}), 400
         
     audio_file = request.files['file']
     
-    # We don't rely on the filename from the front-end, we name it explicitly
     filename = "audio.mp3" 
-        
+
     try:
         # 1. Use a temporary file to save the incoming audio data
         with tempfile.NamedTemporaryFile(suffix=".mp3", delete=False) as tmp:
@@ -54,16 +47,13 @@ def transcribe_audio():
             temp_path = tmp.name
         
         # 2. Open the file using the explicit filename "audio.mp3" 
-        # This is the filename OpenAI's API often relies on for type detection.
         with open(temp_path, "rb") as f:
             
-            # Create a File-like object with the specific filename required by OpenAI
             openai_file = ("audio.mp3", f.read(), "audio/mp3")
 
-            # Call the OpenAI Whisper Transcription API securely
             response = client.audio.transcriptions.create(
                 model="whisper-1",
-                file=openai_file, # Pass the file object with explicit filename/data/mime
+                file=openai_file,
                 language="en"
             )
             
@@ -75,7 +65,6 @@ def transcribe_audio():
 
     except Exception as e:
         print(f"Transcription Error: {e}")
-        # Make sure the temporary file is deleted even if an error occurs
         if 'temp_path' in locals() and os.path.exists(temp_path):
             os.remove(temp_path)
         return jsonify({"error": f"Failed to transcribe audio on the server: {str(e)}"}), 500
@@ -90,7 +79,7 @@ def generate_suggestions_flask():
 
     data = request.json
     user_text = data.get('user_text')
-    general_context = data.get('context') # Received from React's general_context variable
+    general_context = data.get('context')
 
     if not user_text or not general_context:
         return jsonify({"error": "Missing user_text or context"}), 400
