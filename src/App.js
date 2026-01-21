@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import OpenAI from "openai";
 import { useSpeechSynthesis } from "react-speech-kit";
+import HelpButton from "./HelpButton";
 
 function App() {
   const [isFFmpegLoaded, setIsFFmpegLoaded] = useState(false);
@@ -433,11 +434,13 @@ function App() {
         )}
       </div>
       
+      <HelpButton />
       {/* <div className="footer">
         <p>© 2025 Aphasia Assistant</p>
       </div> */}
     </div>
   );
+
 }
 
 export default App;
