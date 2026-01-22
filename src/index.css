@@ -135,6 +135,23 @@ button {
   background-color:#cfcfcf
 }
 
+.refresh-btn {
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  border: none;
+  margin: 0.1rem 1rem 1.5rem 0;
+  outline: none;
+  font-size: 1.3rem;
+  background-color:#cfcfcf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .ear-icon {
   width: 42px;  /* Adjust size as needed */
   height: 42px;
@@ -146,6 +163,11 @@ button {
 }
 
 .sad-icon {
+  width: 42px;  /* Adjust size as needed */
+  height: 42px;
+}
+
+.refresh-icon {
   width: 42px;  /* Adjust size as needed */
   height: 42px;
 }

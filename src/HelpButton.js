@@ -26,15 +26,17 @@ const HelpButton = () => {
   const containerStyle = isOpen
     ? {
         position: 'fixed',
-        top: '50%',
+        top: '50px',
         left: '50%',
-        transform: 'translate(-50%, -75%)', 
+        transform: 'translateX(-50%)',
         zIndex: 9999,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        width: 'fit-content',
-        height: 'auto'
+        width: '1000px',
+        maxWidth:'90vw',
+        height: 'auto',
+        maxHeight:'80vh'
       }
     : {
         position: 'fixed',
