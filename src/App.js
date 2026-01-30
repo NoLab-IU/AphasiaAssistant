@@ -80,12 +80,12 @@ function App() {
     cancel();
     if (suggestionValid1) {
       setSuggestionValid1(false);
-      setText(suggestions[1]);
+      // setText(suggestions[1]);
       setSuggestionValid2(true);
     } else if (suggestionValid2) {
       setSuggestionValid2(false);
       setSuggestionValid3(true);
-      setText(suggestions[2]);
+      // setText(suggestions[2]);
     } else if (suggestionValid3) {
       // setRecording(false);
       setSuggestions([]);
@@ -322,7 +322,7 @@ function App() {
       
       setSuggestions(suggestionsList);
       // setSpeechText(suggestionsList[0]);
-      setText(suggestionsList[0]);
+      // setText(suggestionsList[0]);
       setStatus("Suggestions ready");
     } catch (error) {
       console.error("Suggestion Error:", error);
