@@ -16,7 +16,6 @@ function App() {
   const [text, setText] = useState("");
   const { speak, cancel } = useSpeechSynthesis();
   const [status, setStatus] = useState("Click to start recording");
-  const [isAccepted, setIsAccepted] = useState(false);
   
   // Initialize FFmpeg and OpenAI
   useEffect(() => {
@@ -69,34 +68,12 @@ function App() {
   // const [streamRef, setStreamRef] = useState(null);
   // const [audioChunks, setAudioChunks] = useState([]);
 
-  // const handleYesOrReset = () => {
-  //   // setRecording(false);
-  //   cancel();
-  //   setSuggestions([]);
-  //   setTranscription("");
-  //   setStatus("Click to start recording");
-  // };
-
-  const handleAccept = () => {
-    cancel();
-    setIsAccepted(true);
-    setStatus('Suggestion accepted');
-  };
-
-  const handleStartOver = () => {
+  const handleYesOrReset = () => {
+    // setRecording(false);
     cancel();
     setSuggestions([]);
     setTranscription("");
-    setText("");
     setStatus("Click to start recording");
-    
-    // Reset suggestion navigation logic
-    setSuggestionValid1(true);
-    setSuggestionValid2(false);
-    setSuggestionValid3(false);
-    
-    // Reset the accepted state
-    setIsAccepted(false);
   };
 
   const handleNo = () => {
@@ -124,7 +101,6 @@ function App() {
   // Start Recording
   const startRecording = async () => {
     cancel();
-    setIsAccepted(false);
     setStatus("Recording...");
     setRecording(true);
     // setAudioURL(null);
@@ -399,24 +375,16 @@ function App() {
                   <button className="hear-btn" onClick={() => setText(suggestions[0])}>
                     <img src={process.env.PUBLIC_URL + "/ear2.svg"} alt="ear icon" class="ear-icon" />
                   </button>
-
-                  {!isAccepted ? (
-                    <>
-                      <button className="yes-btn" onClick={handleAccept}>
-                        <img src={process.env.PUBLIC_URL + "/happy2.svg"} alt="happy icon" className="happy-icon" />
-                      </button>{" "}
-                      <button className="no-btn" onClick={handleNo}>
-                        <img src={process.env.PUBLIC_URL + "/sad2.svg"} alt="sad icon" className="sad-icon" />
-                      </button>
-                    </>
-                  ) : (
-                    <button className="refresh-btn" onClick={handleStartOver}>
-                      <img src={process.env.PUBLIC_URL + "/refresh.jpg"} alt="refresh icon" className="refresh-icon" style={{width: '50px', height: '50px'}} />
-                    </button>
-                  )}
-
+                  <button className="yes-btn" onClick={handleYesOrReset}>
+                    <img src={process.env.PUBLIC_URL + "/happy2.svg"} alt="happy icon" class="happy-icon" />
+                  </button>{" "}
+                  <button className="no-btn" onClick={handleNo}>
+                    <img src={process.env.PUBLIC_URL + "/sad2.svg"} alt="sad icon" class="sad-icon" /> 
+                  </button>{" "}
+                  {/* <button onClick={handleYesOrReset}>Reset</button> */}
                 </div>
               </>
+                
               )}
 
               {suggestionValid2 && (
@@ -428,20 +396,13 @@ function App() {
                   <button className="hear-btn" onClick={() => setText(suggestions[1])}>
                     <img src={process.env.PUBLIC_URL + "/ear2.svg"} alt="ear icon" class="ear-icon" />
                   </button>
-                  {!isAccepted ? (
-                    <>
-                      <button className="yes-btn" onClick={handleAccept}>
-                        <img src={process.env.PUBLIC_URL + "/happy2.svg"} alt="happy icon" className="happy-icon" />
-                      </button>{" "}
-                      <button className="no-btn" onClick={handleNo}>
-                        <img src={process.env.PUBLIC_URL + "/sad2.svg"} alt="sad icon" className="sad-icon" />
-                      </button>
-                    </>
-                  ) : (
-                    <button className="refresh-btn" onClick={handleStartOver}>
-                      <img src={process.env.PUBLIC_URL + "/refresh.jpg"} alt="refresh icon" className="refresh-icon" style={{width: '50px', height: '50px'}} />
-                    </button>
-                  )}
+                  <button className="yes-btn" onClick={handleYesOrReset}>
+                    <img src={process.env.PUBLIC_URL + "/happy2.svg"} alt="happy icon" class="happy-icon" />
+                  </button>{" "}
+                  <button className="no-btn" onClick={handleNo}>
+                    <img src={process.env.PUBLIC_URL + "/sad2.svg"} alt="sad icon" class="sad-icon" /> 
+                  </button>{" "}
+                  {/* <button onClick={handleYesOrReset}>Reset</button> */}
                 </div>
               </>
               )}
@@ -455,20 +416,13 @@ function App() {
                   <button className="hear-btn" onClick={() => setText(suggestions[2])}>
                     <img src={process.env.PUBLIC_URL + "/ear2.svg"} alt="ear icon" class="ear-icon" />
                   </button>
-                  {!isAccepted ? (
-                    <>
-                      <button className="yes-btn" onClick={handleAccept}>
-                        <img src={process.env.PUBLIC_URL + "/happy2.svg"} alt="happy icon" className="happy-icon" />
-                      </button>{" "}
-                      <button className="no-btn" onClick={handleNo}>
-                        <img src={process.env.PUBLIC_URL + "/sad2.svg"} alt="sad icon" className="sad-icon" />
-                      </button>
-                    </>
-                  ) : (
-                    <button className="refresh-btn" onClick={handleStartOver}>
-                      <img src={process.env.PUBLIC_URL + "/refresh.jpg"} alt="refresh icon" className="refresh-icon" style={{width: '50px', height: '50px'}} />
-                    </button>
-                  )}
+                  <button className="yes-btn" onClick={handleYesOrReset}>
+                    <img src={process.env.PUBLIC_URL + "/happy2.svg"} alt="happy icon" class="happy-icon" />
+                  </button>{" "}
+                  <button className="no-btn" onClick={handleNo}>
+                    <img src={process.env.PUBLIC_URL + "/sad2.svg"} alt="sad icon" class="sad-icon" /> 
+                  </button>{" "}
+                  {/* <button onClick={handleYesOrReset}>Reset</button> */}
                 </div>
                 </>
               )}
