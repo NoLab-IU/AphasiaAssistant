@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import OpenAI from "openai";
 import { useSpeechSynthesis } from "react-speech-kit";
 import HelpButton from "./HelpButton";
+import CinderellaViewer from './CinderellaViewer';
 
 function App() {
   const [isFFmpegLoaded, setIsFFmpegLoaded] = useState(false);
@@ -148,7 +149,7 @@ function App() {
           setRecording(false);
           setStatus("Processing audio...");
         }
-      }, 15000);
+      }, 300000);
       
       setRecordingTimeout(timeout);
     } catch (error) {
@@ -262,13 +263,21 @@ function App() {
           - Phonemic and semantic paraphasias (e.g., "I need the skadoodle for my coffee" → "I need the spoon for my coffee.")
           - Repetitions and perseverations (e.g., "I go go store" → "I am going to the store.")
 
-          **Important**: 
-          1. Whenever possible, assume the user is speaking about themselves in the first person ("I", "me"), **unless** the input explicitly mentions another subject like “he,” “she,” or a name. 
-          2. Keep responses simple, clear, and grammatically correct while preserving meaning.
-          3. Use natural, conversational language.
+          **Context**:
+          The user is performing two possible tasks:
+          1. Personal Interview: Talking about their own life (Subject: "I", "Me")
+          2. Story Retelling: Retelling the story of Cinderella (Subject: "Cinderella", "Prince", "Stepmother", "Stepsisters")
+
+          **Important Guidelines**: 
+          1. Detect the topic, if the input contains keywords like "prince", "ball", "dance", "mouse", "glass slipper", "stepmother", "stepsister", "pumpkin", or "fairy godmother", assume they are telling the Cinderella story. 
+          Then use the third person (e.g., "she") and past tense. Only use the information provided in the user's input. Do not add plot points that the user did not say.
+          2. If the input is about daily life, whenever possible, assume the user is speaking about themselves in the first person ("I", "me"), **unless** the input explicitly mentions another subject like “he,” “she,” or a name. 
+          3. Keep responses simple, clear, and grammatically correct while preserving meaning.
+          4. Use natural, conversational language.
 
           Examples:
 
+          1. Personal Interview:
           Input: "He eat yesterday"
           Output: "He ate yesterday."
 
@@ -292,6 +301,19 @@ function App() {
 
           Input: "I happy today!"
           Output: "I am happy today!"
+
+          2. Cinderella Story Retelling:
+          Input: "Girl... uh, uh... sad... floor clean"
+          Output: "The girl was sad and cleaned the floor."
+
+          Input: "Prince... foot thing"
+          Output: "The prince picked up the glass slipper."
+
+          Input: "Run... uh, uh... twelve"
+          Output: "She ran away at tweleve."
+
+          Input: "The sprinkly person said you can take the car"
+          Output: "The fairy godmother said you can take the carriage."
           `
         
       // 1. Send the prompt and context to the Flask suggestion endpoint
@@ -435,6 +457,8 @@ function App() {
       </div>
       
       <HelpButton />
+      <CinderellaViewer />
+
       {/* <div className="footer">
         <p>© 2025 Aphasia Assistant</p>
       </div> */}
