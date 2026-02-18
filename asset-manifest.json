@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/AphasiaAssistant/static/css/main.47ba363c.css",
-    "main.js": "/AphasiaAssistant/static/js/main.be2e66ab.js",
+    "main.js": "/AphasiaAssistant/static/js/main.eba21d9d.js",
     "static/js/775.ed32b9b6.chunk.js": "/AphasiaAssistant/static/js/775.ed32b9b6.chunk.js",
     "static/js/896.aa3b6604.chunk.js": "/AphasiaAssistant/static/js/896.aa3b6604.chunk.js",
     "static/js/453.bd662b35.chunk.js": "/AphasiaAssistant/static/js/453.bd662b35.chunk.js",
     "static/js/726.7c7c4404.chunk.js": "/AphasiaAssistant/static/js/726.7c7c4404.chunk.js",
     "index.html": "/AphasiaAssistant/index.html",
     "main.47ba363c.css.map": "/AphasiaAssistant/static/css/main.47ba363c.css.map",
-    "main.be2e66ab.js.map": "/AphasiaAssistant/static/js/main.be2e66ab.js.map",
+    "main.eba21d9d.js.map": "/AphasiaAssistant/static/js/main.eba21d9d.js.map",
     "775.ed32b9b6.chunk.js.map": "/AphasiaAssistant/static/js/775.ed32b9b6.chunk.js.map",
     "896.aa3b6604.chunk.js.map": "/AphasiaAssistant/static/js/896.aa3b6604.chunk.js.map",
     "453.bd662b35.chunk.js.map": "/AphasiaAssistant/static/js/453.bd662b35.chunk.js.map",
@@ -16,6 +16,6 @@
   },
   "entrypoints": [
     "static/css/main.47ba363c.css",
-    "static/js/main.be2e66ab.js"
+    "static/js/main.eba21d9d.js"
   ]
 }
