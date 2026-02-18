@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 // 1. Setup the Image Sources
-const TOTAL_IMAGES = 24; 
+const TOTAL_IMAGES = 6; 
 const CINDERELLA_IMAGES = Array.from({ length: TOTAL_IMAGES }, (_, i) => 
-  `${process.env.PUBLIC_URL || ""}/Cinderella/${i + 1}.jpg`
+  `${process.env.PUBLIC_URL || ""}/Grouped_Cinderella/${i + 1}.png`
 );
 
 const CinderellaViewer = () => {
